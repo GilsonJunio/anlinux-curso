@@ -2,12 +2,12 @@
 folder=debian-fs
 if [ -d "$folder" ]; then
 	first=1
-	echo "skipping downloading"
+	echo "IGNORAR DOWNLOAD"
 fi
 tarball="debian-rootfs.tar.xz"
 if [ "$first" != 1 ];then
 	if [ ! -f $tarball ]; then
-		echo "Download Rootfs, this may take a while base on your internet speed."
+		echo "BAIXANDO ROOTFS, ESTE PROCESSO PODE DEMORAR DE ACORDO COM SUA CONEXÃO À INTERNET."
 		case `dpkg --print-architecture` in
 		aarch64)
 			archurl="arm64" ;;
@@ -29,13 +29,13 @@ if [ "$first" != 1 ];then
 	cur=`pwd`
 	mkdir -p "$folder"
 	cd "$folder"
-	echo "Decompressing Rootfs, please be patient."
+	echo "DESCOMPRIMINDO ROOTFS, AGUARDE."
 	proot --link2symlink tar -xJf ${cur}/${tarball}||:
 	cd "$cur"
 fi
 mkdir -p debian-binds
 bin=start-debian.sh
-echo "writing launch script"
+echo "CRIANDO SCRIPT .SH"
 cat > $bin <<- EOM
 #!/bin/bash
 cd \$(dirname \$0)
@@ -77,27 +77,27 @@ else
 fi
 EOM
 
-echo "Setting up pulseaudio so you can have music in distro."
+echo "CONFIGURANDO PULSEAUDIO."
 
 pkg install pulseaudio -y
 
 if grep -q "anonymous" ~/../usr/etc/pulse/default.pa;then
-    echo "module already present"
+    echo "MODULO EXISTENTE"
 else
     echo "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" >> ~/../usr/etc/pulse/default.pa
 fi
 
 echo "exit-idle-time = -1" >> ~/../usr/etc/pulse/daemon.conf
-echo "Modified pulseaudio timeout to infinite"
+echo "MODIFICAR O TEMPO DE AUTO-DESATIVACAO DE PULSEAUDIO PARA INFINITO"
 echo "autospawn = no" >> ~/../usr/etc/pulse/client.conf
-echo "Disabled pulseaudio autospawn"
-echo "export PULSE_SERVER=127.0.0.1" >> debian-fs/etc/profile
-echo "Setting Pulseaudio server to 127.0.0.1"
+echo "DESATIVAR AUTO-INICIO DE PULSEAUDIO"
+echo "EXPORTAR PULSE_SERVER=127.0.0.1" >> debian-fs/etc/profile
+echo "CONFIGURANDO SERVIDOR PULSEAUDIO 127.0.0.1"
 
 echo "fixing shebang of $bin"
 termux-fix-shebang $bin
 echo "making $bin executable"
 chmod +x $bin
-echo "removing image for some space"
+echo "REMOVER IMAGEM PARA SALVAR ESPACO"
 rm $tarball
-echo "You can now launch Debian with the ./${bin} script"
+echo "INICIE DEBIAN UTILIZANDO O COMANDO ./${bin}."
