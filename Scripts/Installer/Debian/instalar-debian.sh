@@ -22,9 +22,9 @@ if [ "$first" != 1 ];then
 		x86)
 			archurl="i386" ;;
 		*)
-			echo "unknown architecture"; exit 1 ;;
+			echo "ARQUITETURA DESCONHECIDA"; exit 1 ;;
 		esac
-		wget "https://raw.githubusercontent.com/EXALAB/AnLinux-Resources/master/Rootfs/Debian/${archurl}/debian-rootfs-${archurl}.tar.xz" -O $tarball
+		wget "https://raw.githubusercontent.com/GilsonJunio/anlinux-curso/anlinuxcurso-master/Rootfs/Debian/${archurl}/debian-rootfs-${archurl}.tar.xz" -O $tarball
 	fi
 	cur=`pwd`
 	mkdir -p "$folder"
@@ -90,14 +90,14 @@ fi
 echo "exit-idle-time = -1" >> ~/../usr/etc/pulse/daemon.conf
 echo "MODIFICAR O TEMPO DE AUTO-DESATIVACAO DE PULSEAUDIO PARA INFINITO"
 echo "autospawn = no" >> ~/../usr/etc/pulse/client.conf
-echo "DESATIVAR AUTO-INICIO DE PULSEAUDIO"
+echo "DESATIVAR AUTO-INÍCIO DE PULSEAUDIO"
 echo "EXPORTAR PULSE_SERVER=127.0.0.1" >> debian-fs/etc/profile
 echo "CONFIGURANDO SERVIDOR PULSEAUDIO 127.0.0.1"
 
-echo "fixing shebang of $bin"
+echo "CONSERTANDO SHEBANG DE $bin"
 termux-fix-shebang $bin
-echo "making $bin executable"
+echo "$bin É EXECUTÁVEL"
 chmod +x $bin
 echo "REMOVER IMAGEM PARA SALVAR ESPACO"
 rm $tarball
-echo "INICIE DEBIAN UTILIZANDO O COMANDO ./${bin}."
+echo "INICIE DEBIAN UTILIZANDO O COMANDO ./${bin} LOGO ABAIXO."
